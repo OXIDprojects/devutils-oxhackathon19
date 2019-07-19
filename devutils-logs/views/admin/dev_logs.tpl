@@ -122,7 +122,7 @@
     [{* exception log stuff *}]
     $scope.exceptions = {'status': '', 'log': []};
     $scope.loadExceptionLog = function () {
-        $http.get("[{ $oViewConf->getSelfLink()|oxaddparams:"cl=dev_logs&fnc=getExceptionLog"|replace:"&amp;":"&" }]")
+        $http.get("[{$oViewConf->getSelfLink()|oxaddparams:"cl=dev_logs&fnc=getExceptionLog"|replace:"&amp;":"&"}]")
                 .then(function (res) {
                     if(res.data.status = 'ok') {
                         $scope.exceptions = res.data;
@@ -144,7 +144,7 @@
     [{* error log stuff *}]
     $scope.errors = {'status': '', 'log': []};
     $scope.loadErrorLog = function () {
-        $http.get("[{ $oViewConf->getSelfLink()|oxaddparams:"cl=dev_logs&fnc=getErrorLog"|replace:"&amp;":"&" }]")
+        $http.get("[{$oViewConf->getSelfLink()|oxaddparams:"cl=dev_logs&fnc=getErrorLog"|replace:"&amp;":"&"}]")
                 .then(function (res) {
                     if(res.data.status = 'ok') {
                         $scope.errors = res.data;

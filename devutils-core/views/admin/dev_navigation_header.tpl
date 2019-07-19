@@ -25,21 +25,21 @@
         background: #00AA00;
     }
 </style>[{/strip}]
-<form name="devutils" id="devutils" action="[{$oViewConf->getSelfLink() }]" method="post" target="vtdevframe">
+<form name="devutils" id="devutils" action="[{$oViewConf->getSelfLink()}]" method="post" target="devframe">
     [{$oViewConf->getHiddenSid() }]
-    <input type="hidden" name="cl" value="vtdev_gui">
+    <input type="hidden" name="cl" value="dev_gui">
     <input type="checkbox" id="keepalive" name="fnc" value="keepalive">
     <button class="btn-vtdev" type="submit" name="fnc" value="cleartmp">clear<br/>php cache</button>
     <button class="btn-vtdev" type="submit" name="fnc" value="cleartpl">clear<br/>tpl cache</button>
 
-    <iframe name="vtdevframe" width="0" height="0" border="0" style="display:none;"></iframe>
+    <iframe name="devframe" width="0" height="0" border="0" style="display:none;"></iframe>
     [{* <button class="textButton" type="submit" name="fnc" value="updateviews" onclick="return confirm('[{oxmultilang ident="SHOP_MALL_UPDATEVIEWSCONFIRM"}]?')">update views</button> *}]
 </form>
 <script>
     setInterval(function(){
-        var vtdevutils = document.getElementById('devutils'),
+        var devutils = document.getElementById('devutils'),
             keepalive = document.getElementById('keepalive');
-        if(keepalive.checked) vtdevutils.submit();
+        if(keepalive.checked) devutils.submit();
     }, 300000);
 </script>
 [{include file="header.tpl"}]
