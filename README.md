@@ -1,5 +1,5 @@
 # vt-devutils
-developer utilities for OXID eShop
+developer utilities for OXID eShop 6
 
 **Attention**, this is not my module, you can find the author here: https://github.com/vanilla-thunder/vt-devutils
 
