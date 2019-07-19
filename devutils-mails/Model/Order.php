@@ -7,6 +7,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsDate;
 
 class Order extends Order_parent {
+
     /** this function simulates finalizeOrder
      *
      * @param $oBasket oxBasket
@@ -46,7 +47,14 @@ class Order extends Order_parent {
             }
         }
 
+        $oBasket->calculateBasket();
+
         $this->_oBasket = $oBasket;
+
+        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
+        if ($oPayment->load($this->oxorder__oxpaymenttype->value)) {
+            $this->_oPayment = $oPayment;
+        }
 
         return $oBasket;
     }

@@ -14,9 +14,11 @@ $aModule = [
         \OxidEsales\Eshop\Application\Model\Order::class => OxidCommunity\DevutilsMails\Model\Order::class
     ],
     'controllers' => [
-        'dev_mails' => OxidCommunity\DevutilsMails\Controller\Mails::class
+        'dev_mails'                 => OxidCommunity\DevutilsMails\Controller\Mails::class,
+        'dev_order_mails'           => OxidCommunity\DevutilsMails\Controller\OrderMails::class
     ],
     'templates'   => [
-        'dev_mails.tpl' => 'oxcom/devutils-mails/views/dev_mails.tpl'
+        'dev_mails.tpl'             => 'oxcom/devutils-mails/views/admin/tpl/dev_mails.tpl',
+        'dev_order_mails.tpl'       => 'oxcom/devutils-mails/views/admin/tpl/dev_order_mails.tpl'
     ],
 ];

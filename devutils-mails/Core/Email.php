@@ -18,25 +18,46 @@ class Email extends Email_parent {
 
     public function send() {
         if ($this->isDebug()) {
-            $encoder = Registry::get(SeoEncoder::class);
-            $sFile = $this->getSubject();
-            $sFile = $encoder->encodeString($sFile, true, 0);
-            $sFile = preg_replace("/[^A-Za-z0-9" . preg_quote('-', '/') . " \t\/]+/", '', $sFile);
-            $sFile = preg_replace("/[^A-Za-z0-9" . preg_quote('-', '/') . "\/]+/", '_', $sFile);
-            if (is_file(Registry::getConfig()->getLogsDir() . $sFile . '.html')) {
-                unlink(Registry::getConfig()->getLogsDir() . $sFile . '.html');
-            }
-
-            Registry::getUtils()->writeToLog(preg_replace("/\r|\n/", "", $this->getBody()), $sFile . '.html');
             return $this;
         }
         return parent::send();
     }
 
     public function sendForgotPwdEmail($sEmailAddress, $sSubject = null) {
-        Registry::getUtils()->writeToLog($sEmailAddress . " haz forgot pwd!", 'pwd.log');
         $ret = parent::sendForgotPwdEmail($sEmailAddress, $sSubject);
-        Registry::getUtils()->writeToLog($sEmailAddress . " haz forgot pwd!!!!", 'pwd.log');
+
         return ($this->isDebug()) ? $this : $ret;
+    }
+
+    public function sendOrderEmailToUser($order, $subject = null)
+    {
+        $myConfig = $this->getConfig();
+        $this->setViewData("shopTemplateDir", $myConfig->getTemplateDir(false));
+        $lang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $orderLang = (int) (isset($order->oxorder__oxlang->value) ? $order->oxorder__oxlang->value : 0);
+        $smarty = $this->_getSmarty();
+
+        // #1469 - we need to patch security here as we do not use standard template dir, so smarty stops working
+        $store['INCLUDE_ANY'] = $smarty->security_settings['INCLUDE_ANY'];
+        //V send email in order language
+        $oldTplLang = $lang->getTplLanguage();
+        $oldBaseLang = $lang->getTplLanguage();
+        $lang->setTplLanguage($orderLang);
+        $lang->setBaseLanguage($orderLang);
+
+        $smarty->security_settings['INCLUDE_ANY'] = true;
+        // force non admin to get correct paths (tpl, img)
+        $myConfig->setAdminMode(false);
+
+
+        $ret = parent::sendOrderEmailToUser($order, $subject);
+
+        $myConfig->setAdminMode(true);
+        $lang->setTplLanguage($oldTplLang);
+        $lang->setBaseLanguage($oldBaseLang);
+        // set it back
+        $smarty->security_settings['INCLUDE_ANY'] = $store['INCLUDE_ANY'];
+
+        return $ret;
     }
 }

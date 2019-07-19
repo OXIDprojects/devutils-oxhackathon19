@@ -1,13 +1,14 @@
 {
   "name": "oxcom/devutils-mails",
-  "description": "Analysis module for finding problematical shop data.",
+  "description": "Check emails in admin.",
   "type": "oxideshop-module",
   "keywords": [
     "oxid",
     "modules",
     "admin",
     "dev",
-    "debug"
+    "debug",
+    "email"
   ],
   "homepage": "https://github.com/OXIDprojects/devutils-oxhackathon19",
   "license": [

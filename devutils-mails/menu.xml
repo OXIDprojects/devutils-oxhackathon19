@@ -4,5 +4,10 @@
 		<MAINMENU id="mxextensions">
 			<SUBMENU id="dev_mails" cl="dev_mails" />
 		</MAINMENU>
+		<MAINMENU id="mxorders">
+			<SUBMENU id="mxdisplayorders" cl="admin_order" list="order_list">
+				<TAB id="dev_order_mails" cl="dev_order_mails" />
+			</SUBMENU>
+		</MAINMENU>
 	</OXMENU>
 </OX>
