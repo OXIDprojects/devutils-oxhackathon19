@@ -1,6 +1,6 @@
 <?php
 
-$sLangName = "Deutsch";
+$sLangName = "English";
 
 $aLang = [
     'charset'                                       => 'UTF-8',

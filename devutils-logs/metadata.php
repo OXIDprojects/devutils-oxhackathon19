@@ -22,11 +22,18 @@ ini_set(\'error_log\',dirname(__FILE__).\'/log/error.log\');</textarea><hr/>acce
     ],
     'settings'    => [
         [
-            'group'    => 'Dev',
+            'group'    => 'DevLogs',
             'name'     => 's_Dev_serverLogPath',
             'type'     => 'str',
             'position' => 0,
             'value'    => 'log/error.log'
+        ],
+        [
+            'group'    => 'DevLogs',
+            'name'     => 'DevUtilsLogsLimit',
+            'type'     => 'str',
+            'position' => 1,
+            'value'    => '15'
         ]
     ]
 ];

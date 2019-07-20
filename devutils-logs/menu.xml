@@ -2,7 +2,7 @@
 <OX>
     <OXMENU id="NAVIGATION_ESHOPADMIN">
         <MAINMENU id="mxextensions">
-            <SUBMENU id="dev_logs" cl="dev_logs"/>
+            <SUBMENU id="DEVUTIL_LOGS_MENU_LABEL" cl="dev_logs"/>
         </MAINMENU>
     </OXMENU>
 </OX>

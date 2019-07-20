@@ -10,6 +10,7 @@ class Logs extends AdminController {
 
     protected $_sExLog = null;
     protected $_sErrLog = null;
+    protected $_iLimitLog = NULL;
 
     public function init() {
         parent::init();
@@ -17,11 +18,15 @@ class Logs extends AdminController {
         $cfg = Registry::getConfig();
 
         $this->_sExLog = $cfg->getConfigParam('sShopDir') . 'log/oxideshop.log';
+
         $this->_sErrLog = ($cfg->getConfigParam('s_Dev_serverLogPath')) ? $cfg->getConfigParam('s_Dev_serverLogPath') : false;
+
         //$this->_sSqlLog = ($cfg->getConfigParam('bSqlLog')) ? $cfg->getConfigParam('sSqlLog') : false;
         //$this->_sMailsLog = ($cfg->getConfigParam('bMailLog')) ? $cfg->getConfigParam('sMailLog') : false;
 
-        if (substr($this->_sErrLog, 0, 1) !== "/") $this->_sErrLog = $cfg->getConfigParam('sShopDir') . $this->_sErrLog; // relative path for webserver error log?
+        if (substr($this->_sErrLog, 0, 1) !== "/") { // relative path for webserver error log?
+            $this->_sErrLog = $cfg->getConfigParam('sShopDir') . $this->_sErrLog;
+        }
     }
 
     public function render() {
@@ -50,37 +55,62 @@ class Logs extends AdminController {
         $cfg = Registry::getConfig();
         $sExLog = $cfg->getConfigParam('sShopDir') . 'log/oxideshop.log';
 
-        if (!file_exists($sExLog) || !is_readable($sExLog)) die(json_encode(['status' => "oxideshop.log does not exist or is not readable"]));
+        if (!file_exists($sExLog) || !is_readable($sExLog)) {
+            exit(json_encode(['status' => "oxideshop.log does not exist or is not readable"]));
+        }
 
         $sData = file_get_contents($sExLog);
+        $aData = preg_split('/\n\[/', $sData);
+        for ($x = 1; $x < count($aData); $x++){
+            $aData[$x] = '[' . $aData[$x];
+        }
 
-        $aData = explode("\n", $sData);
-        $aData = array_slice($aData, -101);
-        array_pop($aData); // cut last empty array element
+        $this->_iLimitLog = intval(Registry::getConfig()->getConfigParam('DevUtilsLogsLimit'));
+        if ($this->_iLimitLog != 0) {
+            $this->_iLimitLog = $this->_iLimitLog * (-1);
+        } else {
+            $this->_iLimitLog = -15;
+        }
+
+        $aData = array_slice($aData, $this->_iLimitLog);
+
         foreach ($aData as $key => $value) {
-            $aEx = explode("Stack Trace:", trim($value));
-            $aHeader = explode("[0]:", $aEx[0]);
 
+            $aEx = explode('[stacktrace]', $value);
+            $aHeader = explode("[\"", $aEx[0]);
             $iFC = preg_match("/Faulty\scomponent\s\-\-\>\s(.*)/", $aEx[1], $aFC);
+            $sSubheader = str_replace($cfg->getConfigParam("sShopDir"), "", trim($aHeader[1])) . ($iFC == 1 ? ": " . $aFC[1] : "");
+            $sSubheader = str_replace('\\n', '', $sSubheader);
 
             $aData[$key] = (object)array(
                 "header"    => str_replace($cfg->getConfigParam("sShopDir"), "", trim($aHeader[0])),
-                "subheader" => str_replace($cfg->getConfigParam("sShopDir"), "", trim($aHeader[1])) . ($iFC == 1 ? ": " . $aFC[1] : ""),
+                "subheader" => $sSubheader,
                 "text"      => htmlentities(str_replace($cfg->getConfigParam("sShopDir"), "", trim($aEx[1]))),
                 "full"      => $value
             );
         }
+        $aData = array_reverse($aData);
+        $aOutput =  [
+            'status'    => 'ok',
+            'log'       => $aData,
+        ];
 
         //$time = filemtime($sExLog);
-        die(json_encode(['status' => 'ok', 'log' => array_reverse($aData)]));
+        exit (json_encode($aOutput));
     }
 
     public function getErrorLog() {
-        if (!$this->_sErrLog) return false;
-        if (!file_exists($this->_sErrLog) || !is_readable($this->_sErrLog)) die(json_encode(['status' => "file does not exist or is not readable"]));
+        var_dump($this->_sErrLog);
+        if (!$this->_sErrLog) {
+            return false;
+        }
+        if (!file_exists($this->_sErrLog) || !is_readable($this->_sErrLog)) {
+            die(json_encode(['status' => "file does not exist or is not readable"]));
+        }
 
         $sData = "\n" . file_get_contents($this->_sErrLog);
         $aData = preg_split('/\n\[/', $sData);
+        var_dump($aData);
         unset($aData[0]);
 
         // xdebug?

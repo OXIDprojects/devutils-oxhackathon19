@@ -7,10 +7,10 @@
         <div class="card">
             <div class="container toolbar" flex-container="row">
                 <div flex-item="1">
-                    <button class="btn btn--l btn--white btn--raised" lx-ripple ng-click="loadExceptionLog()"><i class="mdi mdi-refresh"></i> refresh</button>
+                    <button class="btn btn--l btn--white btn--raised" style="height: unset; width: 100%" lx-ripple ng-click="loadExceptionLog()"><i class="mdi mdi-refresh"></i></button>
                 </div>
                 <div flex-item="4">
-                    <lx-search-filter><input type="text" ng-model="search.exception" placeholder="search..."></lx-search-filter>
+                    <lx-search-filter><input type="text" ng-model="search.exception" placeholder="search..." style="background-color: #EFEFEF; padding: 8px; border-radius: 2px;"></lx-search-filter>
                 </div>
             </div>
         </div>
@@ -26,8 +26,8 @@
             <ul class="list logs">
                 <li class="list-row list-row--has-separator" ng-repeat="log in exceptions.log |filter:{full:search.exception}:false |limitTo:20" ng-click="exception( log )">
                     <div class="list-row__content">
-                        <div class="h3">{{ $index+1 }} # <span ng-bind-html="log.header |highlight:search.exception |html"></span></div>
-                        <span ng-bind-html="log.subheader |highlight:search.exception |html"></span>
+                        <div class="h4 DevUtilLogHover"><span ng-bind-html="log.header |highlight:search.exception |html"></span></div>
+                        <span ng-bind-html="log.subheader |highlight:search.exception |html" class="DevUtilLogHover"></span>
                     </div>
                 </li>
             </ul>
@@ -38,7 +38,7 @@
         <div class="card">
             <div class="toolbar container" flex-container="row">
                 <div flex-item="1">
-                    <button class="btn btn--l btn--white btn--raised" lx-ripple ng-click="loadErrorLog()"><i class="mdi mdi-refresh"></i> refresh</button>
+                    <button class="btn btn--l btn--white btn--raised" style="width: 100%; height: 40px;" lx-ripple ng-click="loadErrorLog()"><i class="mdi mdi-refresh"></i> refresh</button>
                 </div>
                 <div flex-item="4">
                     <lx-search-filter><input type="text" ng-model="search.error" placeholder="search..."></lx-search-filter>
@@ -104,15 +104,23 @@
     </div>
 
     <div class="dialog__content">
-        <pre class="small" ng-bind-html="exceptionmsg.text |highlight:search.exception | html"></pre>
+        <p class="LogDetailBox" ng-bind-html="exceptionmsg.text |highlight:search.exception | html"></p>
     </div>
     <div class="dialog__actions">
-        <button clip-copy="exceptionmsg.full + '&#10; OXID [{$oView->getShopVersion()}] [{$oView->getShopFullEdition()}]'" class="btn btn--m btn--black btn--flat clipboard" lx-ripple lx-dialog-close>
-            copy to clipboard
+[{*
+        <button clip-copy="exceptionmsg.full + '&#10; OXID [{$oView->getShopVersion()}] [{$oView->getShopFullEdition()}]'"
+                class="btn btn--m btn--black btn--flat clipboard"
+                lx-ripple lx-dialog-close        >
+            [{oxmultilang ident="DEVUTIL_LOGS_BUTTON_COPY"}]
         </button>
-        <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close>cancel</button>
+*}]
+        <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close>
+            [{oxmultilang ident="DEVUTIL_LOGS_BUTTON_CANCEL"}]
+        </button>
     </div>
 </lx-dialog>
+
+
 <script>
     [{capture assign="ng"}]
     $scope.dialogs = {};

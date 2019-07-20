@@ -33,6 +33,17 @@ span {display: inline;}
 /* logs */
 .dialog pre { padding: 10px;}
 .logs { margin: 0 5%;}
+.LogDetailBox {
+    font-size: 0.8em;
+    padding: 12px;
+}
+.LogSearchBox {
+    background-color: #CCCCCC;
+    padding: 4px;
+}
+.DevUtilLogHover {
+    cursor: pointer;
+}
 
 /* mails */
 #vtdev_mails iframe { border-collapse: collapse; border: 0; width: 100%; min-height: 600px; }
