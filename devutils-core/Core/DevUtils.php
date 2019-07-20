@@ -24,48 +24,13 @@ class DevUtils extends Base {
         die(json_encode(array('error' => $content)));
     }
 
-    public function clearTmp($output = false) {
-        $pattern = Registry::get(Config::class)->getConfigParam("sCompileDir") . "/*.txt";
-        $i = 0;
-        $fs = 0;
-        foreach (glob($pattern) as $item) {
-            if (is_file($item)) {
-                $fs += filesize($item);
-                unlink($item);
-                $i++;
-            }
-        }
-        $fs = number_format($fs / 1024 / 1024, 2);
-
-        if (!$output) {
-            return "$i files ( $fs MB )  deleted";
-        }
-
-        echo "$i files ( $fs MB )  deleted";
-        exit;
-    }
-
-    public function clearTpl($output = false) {
-        $pattern = Registry::get(Config::class)->getConfigParam("sCompileDir") . "smarty/*.php";
-        $i = 0;
-        $fs = 0;
-        foreach (glob($pattern) as $item) {
-            if (is_file($item)) {
-                $fs += filesize($item);
-                unlink($item);
-                $i++;
-            }
-        }
-        $fs = number_format($fs / 1024 / 1024, 2);
-
-        if (!$output) {
-            return "$i files ( $fs MB )  deleted";
-        }
-
-        echo "$i files ( $fs MB )  deleted";
-        exit;
-    }
-
+    /**
+     *  Not used at the moment => ??
+     *
+     * @param bool $output
+     * @return mixed
+     *
+     */
     public function updateViews($output = false) {
         if (Registry::getSession()->getVariable("malladmin")) {
             $oMetaData = oxNew('oxDbMetaDataHandler');
