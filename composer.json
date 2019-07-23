@@ -1,0 +1,16 @@
+{
+  "name": "oxid-community/devutils",
+  "description": "Metapackage for oxid devutils.",
+  "type": "metapackage",
+  "keywords": [
+    "oxid",
+    "modules",
+    "admin",
+    "dev",
+    "debug"
+  ],
+  "homepage": "https://github.com/OXIDprojects/oxid-devutils",
+  "license": [
+    "GPL-3.0"
+  ]
+}
