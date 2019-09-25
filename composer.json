@@ -12,5 +12,11 @@
   "homepage": "https://github.com/OXIDprojects/oxid-devutils",
   "license": [
     "GPL-3.0"
-  ]
+  ],
+  "require": {
+    "oxid-community/devutils-core": "*",
+    "oxid-community/devutils-logs": "*",
+    "oxid-community/devutils-mails": "*",
+    "oxid-community/devutils-metadata": "*"
+  }
 }
